@@ -24,6 +24,7 @@ export default class SinglyLinkedList {
     return node.next;
   }
 
+  //Show list in console
   dumpList() {
     let node = this.head;
     while (node !== null) {
@@ -88,7 +89,7 @@ export default class SinglyLinkedList {
             this.length--;
             return;
           }
-          console.log("Not the node...");
+          console.log("Not this node...");
           pn = cn;
           cn = cn.next;
         }
@@ -107,7 +108,7 @@ export default class SinglyLinkedList {
       let node = this.head;
       while (node !== null) {
         if (node.data === data) {
-          console.log("Node with data found!");
+          console.log("Node with correct data found!");
           return node;
         }
         console.log("Not this node...");
