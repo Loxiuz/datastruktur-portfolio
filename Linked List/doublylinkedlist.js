@@ -94,8 +94,6 @@ export default class DoublyLinkedList {
     return node;
   }
 
-  removeNode(node) {}
-
   dumpList() {
     console.log(`
         Linked List
