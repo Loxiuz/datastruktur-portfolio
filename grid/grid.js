@@ -1,15 +1,19 @@
 export default class Grid {
+  #rows;
+  #cols;
+  #grid;
+
   constructor(rows, cols) {
-    this.rows = rows;
-    this.cols = cols;
-    this.grid = this.#makeGrid(0);
+    this.#rows = rows;
+    this.#cols = cols;
+    this.#grid = this.#makeGrid(0);
   }
 
   #makeGrid(initialValue) {
     const grid = [];
-    for (let r = 0; r < this.rows; r++) {
+    for (let r = 0; r < this.#rows; r++) {
       const row = [];
-      for (let col = 0; col < this.cols; col++) {
+      for (let col = 0; col < this.#cols; col++) {
         row.push(initialValue);
       }
       grid.push(row);
@@ -18,7 +22,7 @@ export default class Grid {
   }
 
   #isWithinGrid({ row, col }) {
-    return row >= 0 && row < this.rows && col >= 0 && col < this.cols;
+    return row >= 0 && row < this.#rows && col >= 0 && col < this.#cols;
   }
 
   #convertCoordinates(coords, row, col) {
@@ -29,21 +33,21 @@ export default class Grid {
   }
 
   set({ row, col }, value) {
-    if (row <= this.rows && col <= this.cols) {
-      this.grid[row][col] = value;
+    if (row <= this.#rows && col <= this.#cols) {
+      this.#grid[row][col] = value;
     }
   }
 
   get({ row, col }) {
-    if (row <= this.rows && col <= this.cols) {
-      return this.grid[row][col];
+    if (row <= this.#rows && col <= this.#cols) {
+      return this.#grid[row][col];
     }
   }
 
   indexFor({ row, col }) {
     let i = 0;
-    for (let r = 0; r < this.rows; r++) {
-      for (let c = 0; c < this.cols; c++) {
+    for (let r = 0; r < this.#rows; r++) {
+      for (let c = 0; c < this.#cols; c++) {
         if (r === row && c === col) {
           return i;
         }
@@ -54,8 +58,8 @@ export default class Grid {
 
   rowColFor(index) {
     let i = 0;
-    for (let r = 0; r < this.rows; r++) {
-      for (let c = 0; c < this.cols; c++) {
+    for (let r = 0; r < this.#rows; r++) {
+      for (let c = 0; c < this.#cols; c++) {
         if (i === index) {
           return { row: r, col: c };
         }
@@ -82,9 +86,9 @@ export default class Grid {
         const newCol = col + direction.col;
         if (
           newRow >= 0 &&
-          newRow < this.rows &&
+          newRow < this.#rows &&
           newCol >= 0 &&
-          newCol < this.cols
+          newCol < this.#cols
         ) {
           neighbours.push({ row: newRow, col: newCol });
         }
@@ -98,23 +102,23 @@ export default class Grid {
     return neighbours.map((neighbour) => {
       const nRow = neighbour.row;
       const nCol = neighbour.col;
-      return this.grid[nRow][nCol];
+      return this.#grid[nRow][nCol];
     });
   }
 
   nextInRow(coords, row, col) {
     const { row: r, col: c } = this.#convertCoordinates(coords, row, col);
-    if (this.#isWithinGrid({ row: r, col: c }) && c < this.cols - 1) {
+    if (this.#isWithinGrid({ row: r, col: c }) && c < this.#cols - 1) {
       const nextCol = c + 1;
-      return { row: r, col: nextCol, value: this.grid[r][nextCol] };
+      return { row: r, col: nextCol, value: this.#grid[r][nextCol] };
     }
   }
 
   nextInCol(coords, row, col) {
     const { row: r, col: c } = this.#convertCoordinates(coords, row, col);
-    if (this.#isWithinGrid({ row: r, col: c }) && r < this.rows - 1) {
+    if (this.#isWithinGrid({ row: r, col: c }) && r < this.#rows - 1) {
       const nextRow = r + 1;
-      return { row: nextRow, col: c, value: this.grid[nextRow][c] };
+      return { row: nextRow, col: c, value: this.#grid[nextRow][c] };
     }
   }
 
@@ -122,7 +126,7 @@ export default class Grid {
     const { row: r, col: c } = this.#convertCoordinates(coords, row, col);
     if (this.#isWithinGrid({ row: r, col: c })) {
       const prevRow = r - 1;
-      return { row: prevRow, col: c, value: this.grid[prevRow][c] };
+      return { row: prevRow, col: c, value: this.#grid[prevRow][c] };
     }
   }
 
@@ -135,7 +139,7 @@ export default class Grid {
     const { row: r, col: c } = this.#convertCoordinates(coords, row, col);
     if (this.#isWithinGrid({ row: r, col: c })) {
       const prevCol = c - 1;
-      return { row: r, col: prevCol, value: this.grid[r][prevCol] };
+      return { row: r, col: prevCol, value: this.#grid[r][prevCol] };
     }
   }
 
@@ -145,24 +149,24 @@ export default class Grid {
   }
 
   getRows() {
-    return this.rows;
+    return this.#rows;
   }
 
   getCols() {
-    return this.cols;
+    return this.#cols;
   }
 
   size() {
-    return this.rows * this.cols;
+    return this.#rows * this.#cols;
   }
 
   fill(value) {
-    this.grid = this.#makeGrid(value);
+    this.#grid = this.#makeGrid(value);
   }
 
   dump() {
-    for (let row = 0; row < this.rows; row++) {
-      console.log(this.grid[row].join(" "));
+    for (let row = 0; row < this.#rows; row++) {
+      console.log(this.#grid[row].join(" "));
     }
   }
 }
